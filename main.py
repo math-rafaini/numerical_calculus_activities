@@ -9,16 +9,25 @@ def deriv_g(x):
 def deriv_2_g(x):
     return 2520 * (30 * x - 20)
 
-data_frame = {}
+data_frame_1 = {}
+data_frame_2 = {}
 for i in columns:
     column_label = str(i)
     item_1 = g(i)
     item_2 = deriv_g(i)
     item_3 = deriv_2_g(i)
-    data_frame[column_label] = [item_1, item_2, item_3]
+    # patch to make sure it will fit in the hbox size
+    if i <= 0.4:
+        data_frame_1[column_label] = [item_1, item_2, item_3]
+    else:
+        data_frame_2[column_label] = [item_1, item_2, item_3]
 
-df = pd.DataFrame(data_frame)
-df.index = rows
+df_1 = pd.DataFrame(data_frame_1)
+df_1.index = rows
 
-print(df.to_latex())
+df_2 = pd.DataFrame(data_frame_2)
+df_2.index = rows
+
+print(df_1.to_latex())
+print(df_2.to_latex())
 
