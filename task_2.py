@@ -1,14 +1,4 @@
-from newton import newton
-
-def calculate_integral_trapezium_method(f, m, a, b):
-    h = (b-a)/m
-    
-    sum = (1/2)*f(a) + (1/2)*f(b) 
-    x_i = a
-    for i in range(1, m):
-        x_i = x_i + h
-        sum += f(x_i)
-    return sum*h
+from numerical_tools import newton_method, calculate_integral_trapezium_method
 
 def f(x):
     return 105*x**2*(1-x)**4
@@ -20,6 +10,8 @@ def F(tau):
 def derivative_of_F(tau):
     return f(tau)
 
-list_of_approximations = newton(F, derivative_of_F, 0.5, 1000, 10E-10)
+list_of_approximations_newton_method = newton_method(F, derivative_of_F, 0.5, 1000, 10E-10)
+print(len(list_of_approximations_newton_method), list_of_approximations_newton_method[-1])
 
-print(len(list_of_approximations), list_of_approximations[-1])
+list_of_approximations_bisection_method = newton_method(F, derivative_of_F, 0.5, 1000, 10E-10)
+print(len(list_of_approximations_bisection_method), list_of_approximations_bisection_method[-1])

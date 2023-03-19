@@ -1,6 +1,6 @@
 import pandas as pd
 from collections.abc import Callable
-from newton import newton
+from numerical_tools import newton_method, calculate_integral_trapezium_method
 import warnings
 
 # Settings for python and pandas
@@ -62,7 +62,7 @@ init_alpha = 0.7
 precision = 10**(-10)
 num_iterations = 1000
 
-approximations_list = newton(function_expression_for_item_3, derivative_expression_for_item_3, init_alpha, num_iterations, precision)
+approximations_list = newton_method(function_expression_for_item_3, derivative_expression_for_item_3, init_alpha, num_iterations, precision)
 row_label = ["alpha_i"]
 dataset = {}
 
@@ -96,17 +96,6 @@ print("1/h = ", 1/h)
 
 def f(x):
     return 105*x*x*(1-x)**4
-    
-def calculate_integral_trapezium_method(f, m, a, b):
-    h = (b-a)/m
-    
-    sum = (1/2)*f(a) + (1/2)*f(b) 
-    x_i = a
-    for i in range(1, m):
-        x_i = x_i + h
-        sum += f(x_i)
-    return sum*h
-
 
 # Process to discover the value of the minimum m to satisfy the integral inequation:
 m_minimum = 1

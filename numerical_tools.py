@@ -4,7 +4,7 @@ import pandas as pd
 pd.set_option("display.precision", 45)
 
 
-def newton(function:Callable[[float], float], derivative:Callable[[float], float], approximation: float, max_iterations: int, tolerance: float) -> float:
+def newton_method(function:Callable[[float], float], derivative:Callable[[float], float], approximation: float, max_iterations: int, tolerance: float) -> float:
     i = 0
     stop_criteria = function(approximation + tolerance) * function(approximation - tolerance)
     approximations_list = []
@@ -20,3 +20,17 @@ def newton(function:Callable[[float], float], derivative:Callable[[float], float
         stop_criteria = function(approximation + tolerance) * function(approximation - tolerance)
         i+=1
         approximations_list.append(approximation)
+
+def bisection_method(function:Callable[[float], float], max_iterations: int, tolerance: float):
+    pass
+
+def calculate_integral_trapezium_method(f, m, a, b):
+    h = (b-a)/m
+    
+    sum = (1/2)*f(a) + (1/2)*f(b) 
+    x_i = a
+    m = int(m)
+    for i in range(1, m):
+        x_i = x_i + h
+        sum += f(x_i)
+    return sum*h
