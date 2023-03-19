@@ -15,6 +15,11 @@ def f(x):
 
 def F(tau):
     m = 10E4
-    return calculate_integral_trapezium_method(f, m, 0, 1) - 0.5
-    
-    
+    return calculate_integral_trapezium_method(f, m, 0, tau) - 0.5
+
+def derivative_of_F(tau):
+    return f(tau)
+
+list_of_approximations = newton(F, derivative_of_F, 0.5, 1000, 10E-10)
+
+print(len(list_of_approximations), list_of_approximations[-1])
