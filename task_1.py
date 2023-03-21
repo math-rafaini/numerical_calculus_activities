@@ -94,14 +94,16 @@ h = (12/840)**(1/2) * 10E-4
 print("h = ", h)
 print("1/h = ", 1/h)
 
+# This is simply the function initially given by the exercise
+# without any further derivatives.
 def f(x):
     return 105*x*x*(1-x)**4
 
-# Process to discover the value of the minimum m to satisfy the integral inequation:
-m_minimum = 1
-integral_i = integral = calculate_integral_trapezium_method(f, m_minimum, 0, 1)
-while abs(integral_i - 1) >= 10E-8:
-    m_minimum = m_minimum + 1
-    integral_i = calculate_integral_trapezium_method(f, m_minimum, 0, 1)
+m_star = 8367
 
-print(integral_i, m_minimum)
+integral_result = calculate_integral_trapezium_method(f, m_star, 0, 1)
+
+print("integral_result = ", integral_result) 
+
+error_calculation = abs(1 - integral_result)
+print("error_calculation = ", error_calculation)
