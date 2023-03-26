@@ -81,7 +81,7 @@ print(df.T.to_latex())
 print("\n\n\nitem number 4")
 
 def f_second_derivative(x):
-    return 840*(1 - x)*(3*x**2 - 6*x + 1)
+    return 210*((1-x)**2)*(15*x**2 - 10*x + 1)
 
 x1 = 0.276393202250021119414924442025949247181415558
 x2 = 0.723606797749774321992788372881477698683738708
@@ -90,7 +90,7 @@ print("Second derivative in x=x1: ", abs(f_second_derivative(x1)))
 print("Second derivative in x=x2: ", abs(f_second_derivative(x2)))
 print("Second derivative in x=1: ", abs(f_second_derivative(1)))
 
-h = (12/840)**(1/2) * 10E-4
+h = (12/210)**(1/2) * 10E-4
 print("h = ", h)
 print("1/h = ", 1/h)
 
@@ -99,7 +99,7 @@ print("1/h = ", 1/h)
 def f(x):
     return 105*x*x*(1-x)**4
 
-m_star = 8367
+m_star = 4184
 
 integral_result = calculate_integral_trapezium_method(f, m_star, 0, 1)
 
