@@ -90,3 +90,56 @@ def calculate_integral_trapezium_method(f, m, a, b):
         x_i = x_i + h
         sum += f(x_i)
     return sum*h
+
+
+def print_matrix(Matrix, m):
+    
+    for j in range(m):
+        
+        for i in range(m):
+            print(f'{Matrix[j][i]}   ', end= "")
+        print("\n")
+
+
+def triangularize(A, y, m):
+
+    for j in range(m-1):
+        # Procura uma linha k tal que Ak,j != 0 para trocar com a linha j
+        k = j
+        # while k < m and A[k][j] == 0:
+        #     k += 1
+        if k == m:
+            print("A matriz é singular.")
+            return None
+        if k != j:
+            A[j], A[k] = A[k], A[j]
+            y[j], y[k] = y[k], y[j]
+            
+        print_matrix(A, m)
+        # Elimina todos os elementos de A abaixo da diagonal na coluna j
+        for i in range(j+1, m):
+            mu = -A[i][j] / A[j][j]
+            for k in range(j+1, m):
+                
+                print(f'{A[i][k]} += {mu} * {A[j][k]}       valor de j = {j}  valor de k = {k}\n')
+                
+                A[i][k] += mu * A[j][k]
+            
+            y[i] += mu * y[j]
+
+    return A, y
+
+A = [[1,        1,      1       ], 
+     [4,        16,     2**6    ], 
+     [16,       256,    4**6    ]]
+
+y = [1,         1,      1       ]
+
+A_triangular, y_triangular = triangularize(A, y, 3)
+
+print("Matriz triangular superior:")
+for i in range(len(A_triangular)):
+    print(A_triangular[i])
+print("Vetor de termos independentes:")
+print(y_triangular)
+
