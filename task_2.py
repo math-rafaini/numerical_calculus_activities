@@ -1,10 +1,8 @@
 from time import time
 
-from numerical_tools import (newton_method, 
-                            calculate_integral_trapezium_method,
-                            bisection_method,
-                            newton_method_performance_focused,
-                            bisection_method_performance_focused)
+from numerical_tools import (calculate_integral_trapezium_method,
+                             newton_method_performance_focused,
+                             bisection_method_performance_focused)
 
 def f(x):
     return 105*x**2*(1-x)**4
