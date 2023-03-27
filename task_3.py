@@ -59,3 +59,32 @@ print("---------------")
 x = gauss_elimination_method(A, y, 3)
 
 print("Final result for the example matrix:", x)
+
+# Now, for each of the K's in the exercise's statement, we've got:
+
+for k in range(3, 10):
+    m = s*(2**(k-1))
+    h = (b-a)/m
+    independent_terms = []
+    for i in range(0,k):
+        v = (2**i)
+        Th = trapezoidal_rule(f, a, b, v*h, k)
+        Eh = Th - 1
+        independent_terms.append(Eh)
+    # Building the Matrix:
+    Matrix = []
+    for i in range(k):
+        line = []
+        i+=1
+        for j in range(k):
+            j+=1
+            line.append((2**(i-1))**(2*j))
+        Matrix.append(line)
+    
+    print(Matrix)
+    
+    x = gauss_elimination_method(Matrix, independent_terms, k)  
+    
+    print(x)  
+    
+    print("-------------")
