@@ -132,8 +132,15 @@ def triangularize(A, y, m):
     return A, y
 
 def resolve_triangular_matrix(A_triangular, y_triangular, m):
+    x = [0] * m
     for i in range(m-1, -1, -1):
-        print(i)
-        
-for i in range(4, -1, -1):
-        print(i)
+        x_i = y_triangular[i]
+        for j in range(i+1, m):
+            x_i -= A_triangular[i][j] * x[j]
+        x_i = x_i / A_triangular[i][i]
+        x[i] = x_i
+    return x
+
+def gauss_elimination_method(A, y, m):
+    A_triangular, y_triangular = triangularize(A, y, m)
+    return resolve_triangular_matrix(A_triangular, y_triangular, m)

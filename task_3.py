@@ -1,5 +1,6 @@
 import numpy as np
-from numerical_tools import (triangularize)
+from numerical_tools import (triangularize,
+                             gauss_elimination_method)
 
 
 # -----------------------------
@@ -53,3 +54,8 @@ for i in range(len(A_triangular)):
 print("Independent terms vector:")
 print(y_triangular)
 
+print("---------------")
+
+x = gauss_elimination_method(A, y, 3)
+
+print("Final result for the example matrix:", x)
