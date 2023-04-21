@@ -144,3 +144,17 @@ def resolve_triangular_matrix(A_triangular, y_triangular, m):
 def gauss_elimination_method(A, y, m):
     A_triangular, y_triangular = triangularize(A, y, m)
     return resolve_triangular_matrix(A_triangular, y_triangular, m)
+
+def function_function_inner_product(first_function: Callable[[float], float], second_function: Callable[[float], float], 
+                           data_x: list) -> float:
+    total_sum = 0.0
+    for x_k in data_x:
+        total_sum += first_function(x_k) * second_function(x_k)
+    return total_sum
+
+def function_vector_inner_product(function: Callable[[float], float], vector: list, 
+                           data_x: list) -> float:
+    total_sum = 0.0
+    for index, x_k in enumerate(data_x):
+        total_sum += function(x_k) * vector[index]
+    return total_sum
