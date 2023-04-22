@@ -80,15 +80,20 @@ def bisection_method_performance_focused(function:Callable[[float], float], max_
     
     return alpha_next
 
-def calculate_integral_trapezium_method(f, m, a, b):
+def calculate_integral_trapezium_method_based_on_h(function: Callable[[float], float], 
+                                        h: float, a: float, b: float) -> float:
+    m = (b - a) / h
+    return calculate_integral_trapezium_method(function, m, a, b)
+
+def calculate_integral_trapezium_method(function: Callable[[float], float], 
+                                        m: float, a: float, b: float) -> float:
     h = (b-a)/m
-    
-    sum = (1/2)*f(a) + (1/2)*f(b) 
+    sum = (1/2)*function(a) + (1/2)*function(b) 
     x_i = a
     m = int(m)
     for i in range(1, m):
         x_i = x_i + h
-        sum += f(x_i)
+        sum += function(x_i)
     return sum*h
 
 def print_matrix(Matrix, m):
@@ -168,3 +173,32 @@ def calculate_max_and_min_of_array(vector: list[float]) -> list[float]:
         if vector_item < min:
             min = vector_item
     return [min, max]
+
+def calculate_divided_difference_terms(x_vector: list[float], y_vector: list[float]) -> list[float]:
+    #creating matrix
+    matrix = []
+    for i in range(len(x_vector)):
+        matrix.append([])
+        for j in range(len(y_vector)):
+            matrix[i].append(0)
+    
+    for i in range(len(x_vector)):
+        matrix[i][0] = y_vector[i]
+    
+    for i in range(1, len(x_vector)):
+        for j in range(1, i + 1):
+            matrix[i][j] = (matrix[i][j - 1] - matrix[i - 1][j - 1]) / (x_vector[i] - x_vector[i - j])
+
+    # Return the main diagonal of the matrix
+    return [matrix[i][i] for i in range(len(x_vector))]
+        
+def calculate_interpolating_polynomial(interpolating_polynomial_coefficients: list[float], x_vector_data: list[float]) -> Callable[[float], float]:
+    def interpolating_polynomial(x: float) -> float:
+        sum = 0.0
+        for index, item in enumerate(interpolating_polynomial_coefficients):
+            prod_result = 1
+            for prod_index in range(index):
+                prod_result *= (x - x_vector_data[prod_index]) 
+            sum += item * prod_result
+        return sum
+    return interpolating_polynomial
