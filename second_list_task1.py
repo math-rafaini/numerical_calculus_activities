@@ -1,11 +1,15 @@
-import numpy
+import numpy as np
 from math import log
 import pandas as pd
+import matplotlib.pyplot as plt
 from numerical_tools import (function_function_inner_product,
                              function_vector_inner_product,
+                             gauss_elimination_method,
+                             calculate_max_and_min_of_array
                              )
 
-df = pd.read_csv("data.csv")
+pd.set_option("display.precision", 30)
+pd.set_option("display.float_format", lambda x: '%.30f' % x)
 
 x_vector = [10.4, 11.7, 12.8, 13, 15.7, 16.3, 18, 18.7, 20.7, 22.1, 
             22.4, 24.4, 25.8, 32.5, 33.6, 36.8, 37.8, 36.9, 42.2, 47,
@@ -30,17 +34,69 @@ def f_3(x: float) -> float:
 def f_4(x: float) -> float:
     return log(x)
 
-vector_of_functions = [f_1, f_2, f_3, f_4]
+function_vector = [f_1, f_2, f_3, f_4]
 
 
 # Mounting matrix of functions and vectors inner products:
 
-matrix_of_coefficients = []
-for i in range(len(vector_of_functions)):
-    matrix_of_coefficients.append([])
-    for j in range(len(vector_of_functions)):
-        matrix_of_coefficients[i].append(
-            function_function_inner_product(vector_of_functions[i], 
-                                            vector_of_functions[j], x_vector))
+coefficients_matrix = []
+for i in range(len(function_vector)):
+    coefficients_matrix.append([])
+    for j in range(len(function_vector)):
+        coefficients_matrix[i].append(
+            function_function_inner_product(function_vector[i], 
+                                            function_vector[j], x_vector))
 
-print(len(x_vector), matrix_of_coefficients)
+independent_terms_vector = []
+for i in range(len(function_vector)):
+    independent_terms_vector.append(function_vector_inner_product(function_vector[i], y_vector, x_vector))
+
+print("Size of the dataset: ", len(x_vector), "\n\n", "Coefficient matrix: ",  
+      coefficients_matrix, "\n\n", "Independent terms vector: ", independent_terms_vector)
+
+# Exhibiting the coefficients matrix in latex format:
+# This part is commented to avoid polluting the output
+# index = []
+# data_to_data_frame = []
+# for i in range(len(coefficients_matrix)):
+#     for j in range(len(coefficients_matrix)):
+#         index.append("\langle f_"+ str(i+1) +" , \; f_" + str(j+1) + " \rangle")
+#         data_to_data_frame.append([coefficients_matrix[i][j]])
+# df = pd.DataFrame(data_to_data_frame)
+# df.index = index
+# df.columns = ["Valor"]
+# print("Data frame: \n\n", df.to_latex())
+
+
+# Calculating system results to determine the functions coefficients
+system_result = gauss_elimination_method(coefficients_matrix, independent_terms_vector, 
+                                         len(independent_terms_vector))
+
+print("Final system result: ", system_result)
+
+# Defining final function to plot the graph:
+def final_function(x: float) -> float: 
+    total_sum = 0.0
+    for i in range(len(system_result)):
+        total_sum += system_result[i] * function_vector[i](x)
+    return total_sum
+
+interval = calculate_max_and_min_of_array(x_vector)
+graph_grid = np.arange(interval[0], interval[1], 0.01)
+final_function_plot = []
+for i in graph_grid:
+    final_function_plot.append(final_function(i))
+
+plt.plot(graph_grid, final_function_plot, "-b", label="Função ajustada")
+plt.scatter(x_vector, y_vector, color="red", label="Dados fornecidos")
+plt.legend(loc="upper right")
+
+plt.title("Concentração de iodo em profundidade de lago")
+plt.xlabel("Profundidade do lago (m)")
+plt.ylabel("Concentração de iodo (%)")
+
+
+# Note that if you are using a linux distribution to run this script
+# it is important to have a GUI package for the python to plot the graph.
+# To do so, use the command: sudo apt-get install python3-tk
+plt.show()

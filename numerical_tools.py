@@ -131,7 +131,8 @@ def triangularize(A, y, m):
 
     return A, y
 
-def resolve_triangular_matrix(A_triangular, y_triangular, m):
+def resolve_triangular_matrix(A_triangular: list[list[float]], 
+                              y_triangular: list[float], m: int) -> list[float]:
     x = [0] * m
     for i in range(m-1, -1, -1):
         x_i = y_triangular[i]
@@ -141,7 +142,7 @@ def resolve_triangular_matrix(A_triangular, y_triangular, m):
         x[i] = x_i
     return x
 
-def gauss_elimination_method(A, y, m):
+def gauss_elimination_method(A: list[list[float]], y: list[float], m: int):
     A_triangular, y_triangular = triangularize(A, y, m)
     return resolve_triangular_matrix(A_triangular, y_triangular, m)
 
@@ -152,9 +153,18 @@ def function_function_inner_product(first_function: Callable[[float], float], se
         total_sum += first_function(x_k) * second_function(x_k)
     return total_sum
 
-def function_vector_inner_product(function: Callable[[float], float], vector: list, 
-                           data_x: list) -> float:
+def function_vector_inner_product(function: Callable[[float], float], 
+                                  independent_terms_vector: list, data_x: list) -> float:
     total_sum = 0.0
     for index, x_k in enumerate(data_x):
-        total_sum += function(x_k) * vector[index]
+        total_sum += function(x_k) * independent_terms_vector[index]
     return total_sum
+
+def calculate_max_and_min_of_array(vector: list[float]) -> list[float]:
+    max = min = vector[0]
+    for vector_item in vector:
+        if vector_item > max:
+            max = vector_item
+        if vector_item < min:
+            min = vector_item
+    return [min, max]

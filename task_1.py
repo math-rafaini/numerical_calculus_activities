@@ -36,7 +36,7 @@ df.index = rows
 
 new_df = df.T
 
-# The following lines will be commented out to avoid poluting
+# The following lines will be commented out to avoid polluting
 # the output of the rest of the first task
 # It represents the 3 first tables displayed in the first item of 
 # the first task.
