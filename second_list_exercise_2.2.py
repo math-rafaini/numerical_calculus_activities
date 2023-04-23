@@ -4,7 +4,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from numerical_tools import (calculate_integral_trapezium_method_based_on_h,
                              calculate_divided_difference_terms,
-                             calculate_interpolating_polynomial
+                             calculate_interpolating_polynomial,
+                             function_function_inner_product,
+                             function_vector_inner_product,
+                             gauss_elimination_method,
+                             calculate_max_and_min_of_array
                              )
 
 # Defining functions and constants
@@ -98,20 +102,59 @@ def calculate_y_val(integral_error_list: list[float]) -> list[float]:
         log_y_val.append(log(integral_error_list[j]))
     return log_y_val
 
+# Defining functions
+
+def f_1(x:float) -> float:
+    return 1
+
+def f_2(x:float) -> float:
+    return x
+
+function_vector = [f_1, f_2]
+
 # Mounting matrix from Trapezium method:
+x_vector = calculate_x_val(h_ks_list)
+y_vector = calculate_y_val(error_list_1)
 
+coefficients_matrix = []
+for i in range(len(function_vector)):
+    coefficients_matrix.append([])
+    for j in range(len(function_vector)):
+        coefficients_matrix[i].append(
+            function_function_inner_product(function_vector[i], 
+                                            function_vector[j], x_vector))
 
+independent_terms_vector = []
+for i in range(len(function_vector)):
+    independent_terms_vector.append(function_vector_inner_product(function_vector[i], y_vector, x_vector))
 
+print("Size of the dataset: ", len(x_vector), "\n\n", "Coefficient matrix: ",  
+      coefficients_matrix, "\n\n", "Independent terms vector: ", independent_terms_vector)
 
+# Calculating system results to determine the functions coefficients
+system_result = gauss_elimination_method(coefficients_matrix, independent_terms_vector, 
+                                         len(independent_terms_vector))
+
+print("Final system result: ", system_result)
 
 # Item 3:
 # Ploting dataframe following the respective method:
 
-x_vector = calculate_x_val(h_ks_list)
-
 # - Trapezium method
+# Defining final function to plot the graph:
+def final_function(x: float) -> float: 
+    total_sum = 0.0
+    for i in range(len(system_result)):
+        total_sum += system_result[i] * function_vector[i](x)
+    return total_sum
 
-y_vector = calculate_y_val(error_list_1)
+interval = calculate_max_and_min_of_array(x_vector)
+graph_grid = np.arange(interval[0], interval[1], 0.01)
+final_function_plot = []
+for i in graph_grid:
+    final_function_plot.append(final_function(i))
+
+plt.plot(graph_grid, final_function_plot, "-b", label="Função ajustada")
 plt.scatter(x_vector, y_vector, color="red", label="Dados fornecidos")
 plt.legend(loc="upper right")
 
@@ -119,17 +162,48 @@ plt.title("Erro de integração em função do comprimento da partição h")
 plt.xlabel("Comprimento da partição h")
 plt.ylabel("Erro de integração - Método dos trapézios")
 
+
+### Aplying Romberg method now
 # - Romberg method
 y_vector = calculate_y_val(error_list_2)
+
+coefficients_matrix = []
+for i in range(len(function_vector)):
+    coefficients_matrix.append([])
+    for j in range(len(function_vector)):
+        coefficients_matrix[i].append(
+            function_function_inner_product(function_vector[i], 
+                                            function_vector[j], x_vector))
+
+independent_terms_vector = []
+for i in range(len(function_vector)):
+    independent_terms_vector.append(function_vector_inner_product(function_vector[i], y_vector, x_vector))
+
+print("Size of the dataset: ", len(x_vector), "\n\n", "Coefficient matrix: ",  
+      coefficients_matrix, "\n\n", "Independent terms vector: ", independent_terms_vector)
+
+# Calculating system results to determine the functions coefficients
+system_result = gauss_elimination_method(coefficients_matrix, independent_terms_vector, 
+                                         len(independent_terms_vector))
+
+print("Final system result: ", system_result)
+
+# Item 3:
+# Ploting dataframe following the respective method:
+
+# - Romberg method
+# Defining final function to plot the graph:
+interval = calculate_max_and_min_of_array(x_vector)
+graph_grid = np.arange(interval[0], interval[1], 0.01)
+final_function_plot = []
+for i in graph_grid:
+    final_function_plot.append(final_function(i))
+
+plt.plot(graph_grid, final_function_plot, "-b", label="Função ajustada")
 plt.scatter(x_vector, y_vector, color="red", label="Dados fornecidos")
 plt.legend(loc="upper right")
 
 plt.title("Erro de integração em função do comprimento da partição h")
 plt.xlabel("Comprimento da partição h")
 plt.ylabel("Erro de integração - Método de Romberg")
-
-# Note that if you are using a linux distribution to run this script
-# it is important to have a GUI package for the python to plot the graph.
-# To do so, use the command: sudo apt-get install python3-tk
 plt.show()
-
