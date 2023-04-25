@@ -138,7 +138,7 @@ system_result = gauss_elimination_method(coefficients_matrix, independent_terms_
 print("Final system result: ", system_result)
 
 # Item 3:
-# Ploting dataframe following the respective method:
+# Ploting graph following the respective method:
 
 # - Trapezium method
 # Defining final function to plot the graph:
@@ -154,14 +154,9 @@ final_function_plot = []
 for i in graph_grid:
     final_function_plot.append(final_function(i))
 
-plt.plot(graph_grid, final_function_plot, "-b", label="Função ajustada")
+plt.plot(graph_grid, final_function_plot, "-b", label="Método dos trapézios")
 plt.scatter(x_vector, y_vector, color="red", label="Dados fornecidos")
 plt.legend(loc="upper right")
-
-plt.title("Erro de integração em função do comprimento da partição h")
-plt.xlabel("Comprimento da partição h")
-plt.ylabel("Erro de integração - Método dos trapézios")
-
 
 ### Aplying Romberg method now
 # - Romberg method
@@ -189,7 +184,7 @@ system_result = gauss_elimination_method(coefficients_matrix, independent_terms_
 print("Final system result: ", system_result)
 
 # Item 3:
-# Ploting dataframe following the respective method:
+# Ploting graph following the respective method:
 
 # - Romberg method
 # Defining final function to plot the graph:
@@ -199,11 +194,11 @@ final_function_plot = []
 for i in graph_grid:
     final_function_plot.append(final_function(i))
 
-plt.plot(graph_grid, final_function_plot, "-b", label="Função ajustada")
+plt.plot(graph_grid, final_function_plot, "-g", label="Método de Romberg")
 plt.scatter(x_vector, y_vector, color="red", label="Dados fornecidos")
-plt.legend(loc="upper right")
+plt.legend(fontsize=7, loc='lower right')
 
 plt.title("Erro de integração em função do comprimento da partição h")
-plt.xlabel("Comprimento da partição h")
-plt.ylabel("Erro de integração - Método de Romberg")
+plt.xlabel("log(h)")
+plt.ylabel("log(En)")
 plt.show()
