@@ -156,7 +156,6 @@ for i in graph_grid:
 
 plt.plot(graph_grid, final_function_plot, "-b", label="Método dos trapézios")
 plt.scatter(x_vector, y_vector, color="red", label="Dados fornecidos")
-plt.legend(loc="upper right")
 
 ### Aplying Romberg method now
 # - Romberg method
