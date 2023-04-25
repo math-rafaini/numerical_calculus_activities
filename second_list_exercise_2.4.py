@@ -134,7 +134,7 @@ for j in range(len(k)):
     interpolating_polynomial = calculate_interpolating_polynomial(newton_coefficients_interpolating_polynomial, x_Romberg_method[j])
     romberg_integral_list.append(interpolating_polynomial(0))    
 
-real_integral_val = 0.44444444444444444444444444444444 
+real_integral_val = - 0.44444444444444444444444444444444 
 
 error_list_1 = []
 error_list_2 = []
