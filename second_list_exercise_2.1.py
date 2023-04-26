@@ -1,4 +1,5 @@
 import numpy as np
+from collections.abc import Callable
 from math import log, exp
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -16,6 +17,12 @@ def f(x: float) -> float:
     # To test the algorithm, use the following return instead of the above:
     # return x ** 10
     # the result of the Romberg's integral must be 0.0909289894775222
+
+def primitive_f(x: float) -> float:
+    return exp(x)
+
+def exact_defined_integral(primitive_function: Callable[[float], float], a: float, b: float) -> float:
+    return primitive_function(b) - primitive_function(a)
 
 s = 3
 k = 2
@@ -44,4 +51,17 @@ print("Coefficients for Newton's interpolating polynomial: ", newton_coefficient
 # Finding interpolating polynomial based on the coefficients found before
 interpolating_polynomial = calculate_interpolating_polynomial(newton_coefficients_interpolating_polynomial, x_Romberg_method)
 
-print("Result for the Romberg integral: ", interpolating_polynomial(0))
+romberg_integral = interpolating_polynomial(0)
+
+print("Result for the Romberg integral: ", romberg_integral, "\n\n")
+
+# Item 3 
+# Calculating exact solution
+exact_integral = exact_defined_integral(primitive_f, a, b)
+print("Result for the exact integral: ", exact_integral, "\n\n")
+
+trapezium_error = abs(trapezium_list[0] - exact_integral)
+romberg_error = abs(romberg_integral - exact_integral)
+
+print("Trapezium error: ", trapezium_error)
+print("Romberg error: ", romberg_error)

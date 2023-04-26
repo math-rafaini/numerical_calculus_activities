@@ -202,3 +202,28 @@ def calculate_interpolating_polynomial(interpolating_polynomial_coefficients: li
             sum += item * prod_result
         return sum
     return interpolating_polynomial
+
+def simpson_integral(function_to_integrate: Callable[[float], float], 
+                      a: float, b: float, h: float, m: int) -> float:
+    sum = function_to_integrate(a) + function_to_integrate(b)
+    for i in range(1, m):
+        item = a + h*i
+        if i % 2 == 0:
+            sum += function_to_integrate(item) * 2
+        else:
+            sum += function_to_integrate(item) * 4
+    
+    return sum * h / 3
+
+
+def calculate_romberg_lagrange_interpolating_plynomial() -> Callable[[float], float]:
+    def interpolating_polynomial(x: float) -> float:
+        sum = 0.0
+        for index, item in enumerate(interpolating_polynomial_coefficients):
+            prod_result = 1
+            for prod_index in range(index):
+                prod_result *= (x - x_vector_data[prod_index]) 
+            sum += item * prod_result
+        return sum
+    return interpolating_polynomial
+    
